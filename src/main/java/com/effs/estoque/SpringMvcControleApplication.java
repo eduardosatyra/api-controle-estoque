@@ -18,14 +18,14 @@ public class SpringMvcControleApplication implements CommandLineRunner{
 	}
 
 	@Autowired
-	private CategoriaRepository catRep;
+	private CategoriaRepository categoriaRepository;
 	
 	@Override
 	public void run(String... args) throws Exception {
 		
-		Categoria c1 = new Categoria(1L, "Informática");
-		Categoria c2 = new Categoria(2L, "Escritório");		
-		this.catRep.saveAll(Arrays.asList(c1, c2));
+		Categoria c1 = new Categoria(null, "Informática");
+		Categoria c2 = new Categoria(null, "Escritório");		
+		this.categoriaRepository.saveAll(Arrays.asList(c1, c2));
 	}
 
 }
