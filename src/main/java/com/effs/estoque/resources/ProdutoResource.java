@@ -1,7 +1,5 @@
 package com.effs.estoque.resources;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,15 +16,15 @@ import com.effs.estoque.services.ProdutoService;
  */
 
 @RestController
-@RequestMapping(value = "/produtos")
+@RequestMapping(value = "/api/v1/produtos")
 public class ProdutoResource {
 
 	@Autowired
 	private ProdutoService produtoService;
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<?> find(@PathVariable("id") Long id) {
-		Optional<Produto> p = this.produtoService.buscar(id);
+	public ResponseEntity<?> find(@PathVariable("id") Integer id) {
+		Produto p = this.produtoService.find(id);
 		return ResponseEntity.ok().body(p);
 	}
 }

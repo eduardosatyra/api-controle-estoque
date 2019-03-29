@@ -11,6 +11,6 @@ import com.effs.estoque.domain.Categoria;
  */
 
 @Repository
-public interface CategoriaRepository extends JpaRepository<Categoria, Long>{
+public interface CategoriaRepository extends JpaRepository<Categoria, Integer>{
 
 }

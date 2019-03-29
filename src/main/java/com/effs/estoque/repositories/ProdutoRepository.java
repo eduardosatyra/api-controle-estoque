@@ -11,6 +11,6 @@ import com.effs.estoque.domain.Produto;
  */
 
 @Repository
-public interface ProdutoRepository extends JpaRepository<Produto, Long>{
+public interface ProdutoRepository extends JpaRepository<Produto, Integer>{
 
 }

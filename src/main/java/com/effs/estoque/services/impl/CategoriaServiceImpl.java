@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.effs.estoque.domain.Categoria;
 import com.effs.estoque.repositories.CategoriaRepository;
 import com.effs.estoque.services.CategoriaService;
+import com.effs.estoque.services.exception.ObjectNotFoundException;
 
 /**
  * @author eduardosatyra
@@ -18,11 +19,13 @@ public class CategoriaServiceImpl implements CategoriaService {
 
 	@Autowired
 	private CategoriaRepository categoriaRepository;
-	
+
 	@Override
-	public Optional<Categoria> buscar(Long id) {
+	public Categoria find(Integer id) {
 		Optional<Categoria> c = this.categoriaRepository.findById(id);
-		return c;
+
+		return c.orElseThrow(() -> new ObjectNotFoundException(
+				"Objeto não encontrado. Id: " + id + ", Tipo: " + Categoria.class.getName()));
 	}
 
 }

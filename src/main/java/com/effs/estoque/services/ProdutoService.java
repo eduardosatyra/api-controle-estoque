@@ -1,7 +1,5 @@
 package com.effs.estoque.services;
 
-import java.util.Optional;
-
 import com.effs.estoque.domain.Produto;
 
 /**
@@ -10,5 +8,5 @@ import com.effs.estoque.domain.Produto;
  */
 public interface ProdutoService {
 
-	Optional<Produto> buscar(Long id);
+	Produto find(Integer id);
 }

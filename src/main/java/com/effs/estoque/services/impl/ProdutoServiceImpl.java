@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.effs.estoque.domain.Produto;
 import com.effs.estoque.repositories.ProdutoRepository;
 import com.effs.estoque.services.ProdutoService;
+import com.effs.estoque.services.exception.ObjectNotFoundException;
 
 /**
  * @author eduardosatyra
@@ -15,15 +16,16 @@ import com.effs.estoque.services.ProdutoService;
  */
 
 @Service
-public class ProdutoServiceImpl implements ProdutoService{
+public class ProdutoServiceImpl implements ProdutoService {
 
 	@Autowired
 	private ProdutoRepository produtoRepository;
-	
+
 	@Override
-	public Optional<Produto> buscar(Long id) {
+	public Produto find(Integer id) {
 		Optional<Produto> p = this.produtoRepository.findById(id);
-		return p;
+		return p.orElseThrow(() -> new ObjectNotFoundException(
+				"Objeto não encontrado. Id: " + id + ", Tipo: " + Produto.class.getName()));
 	}
 
 }
