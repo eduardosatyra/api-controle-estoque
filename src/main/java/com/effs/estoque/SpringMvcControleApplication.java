@@ -1,5 +1,6 @@
 package com.effs.estoque;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +13,20 @@ import com.effs.estoque.domain.Cidade;
 import com.effs.estoque.domain.Cliente;
 import com.effs.estoque.domain.Endereco;
 import com.effs.estoque.domain.Estado;
+import com.effs.estoque.domain.Pagamento;
+import com.effs.estoque.domain.PagamentoComBoleto;
+import com.effs.estoque.domain.PagamentoComCartao;
+import com.effs.estoque.domain.Pedido;
 import com.effs.estoque.domain.Produto;
+import com.effs.estoque.domain.enums.EstadoPagamento;
 import com.effs.estoque.domain.enums.TipoCliente;
 import com.effs.estoque.repositories.CategoriaRepository;
 import com.effs.estoque.repositories.CidadeRepository;
 import com.effs.estoque.repositories.ClienteRepository;
 import com.effs.estoque.repositories.EnderecoRepository;
 import com.effs.estoque.repositories.EstadoRepository;
+import com.effs.estoque.repositories.PagamentoRepository;
+import com.effs.estoque.repositories.PedidoRepository;
 import com.effs.estoque.repositories.ProdutoRepository;
 
 @SpringBootApplication
@@ -28,6 +36,8 @@ public class SpringMvcControleApplication implements CommandLineRunner{
 		SpringApplication.run(SpringMvcControleApplication.class, args);
 	}
 
+	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+	
 	@Autowired
 	private CategoriaRepository categoriaRepository;
 	@Autowired
@@ -40,6 +50,10 @@ public class SpringMvcControleApplication implements CommandLineRunner{
 	private ClienteRepository clienteRepository;
 	@Autowired
 	private EnderecoRepository enderecoRepository;
+	@Autowired
+	private PedidoRepository pedidoRepository;
+	@Autowired
+	private PagamentoRepository pagamentoRepository;
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -92,6 +106,22 @@ public class SpringMvcControleApplication implements CommandLineRunner{
 		
 		this.clienteRepository.saveAll(Arrays.asList(cli1, cli2, cli3));
 		this.enderecoRepository.saveAll(Arrays.asList(end1Cli1, end2Cli1, end3Cli2, end4Cli3));
+		
+		Pedido ped1 = new Pedido(null, sdf.parse("30/09/2017 10:32"), cli1, end1Cli1);
+		Pedido ped2 = new Pedido(null, sdf.parse("15/07/2015 01:32"), cli2, end3Cli2);
+		Pedido ped3 = new Pedido(null, sdf.parse("09/08/2016 15:38"), cli3, end4Cli3);
+		
+		Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
+		ped1.setPagamento(pagto1);
+		Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, sdf.parse("20/10/2018 00:00"), null);
+		ped2.setPagamento(pagto2);
+		
+		cli1.getPedidos().addAll(Arrays.asList(ped1));
+		cli2.getPedidos().addAll(Arrays.asList(ped2));
+		
+		this.pedidoRepository.saveAll(Arrays.asList(ped1, ped2, ped3));
+		this.pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
+		
 	}
 
 }
