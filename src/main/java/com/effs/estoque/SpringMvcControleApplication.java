@@ -68,9 +68,9 @@ public class SpringMvcControleApplication implements CommandLineRunner{
 		Cidade cd2 = new Cidade(null, "Botafogo", e2);
 		Cidade cd3 = new Cidade(null, "Itapaci", e3);
 		
-		e1.getCidade().addAll(Arrays.asList(cd1));
-		e2.getCidade().addAll(Arrays.asList(cd2));
-		e3.getCidade().addAll(Arrays.asList(cd3));
+		e1.getCidades().addAll(Arrays.asList(cd1));
+		e2.getCidades().addAll(Arrays.asList(cd2));
+		e3.getCidades().addAll(Arrays.asList(cd3));
 		
 		this.estadoRepository.saveAll(Arrays.asList(e1, e2, e3));
 		this.cidadeRepository.saveAll(Arrays.asList(cd1, cd2, cd3));
