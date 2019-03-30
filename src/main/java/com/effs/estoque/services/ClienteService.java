@@ -1,6 +1,6 @@
 package com.effs.estoque.services;
 
-import com.effs.estoque.domain.Cliente;
+import com.effs.estoque.dto.ClienteDto;
 
 /**
  * @author eduardosatyra
@@ -8,5 +8,5 @@ import com.effs.estoque.domain.Cliente;
  */
 public interface ClienteService {
 
-	Cliente find(Integer id);
+	ClienteDto find(Integer id);
 }

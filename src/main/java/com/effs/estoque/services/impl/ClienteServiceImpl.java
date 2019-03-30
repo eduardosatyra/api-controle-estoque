@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.effs.estoque.domain.Cliente;
+import com.effs.estoque.domain.enums.TipoCliente;
+import com.effs.estoque.dto.ClienteDto;
 import com.effs.estoque.repositories.ClienteRepository;
 import com.effs.estoque.services.ClienteService;
 import com.effs.estoque.services.exception.ObjectNotFoundException;
@@ -21,11 +23,21 @@ public class ClienteServiceImpl implements ClienteService {
 	ClienteRepository clienteRepository;
 
 	@Override
-	public Cliente find(Integer id) {
+	public ClienteDto find(Integer id) {
 		Optional<Cliente> c = this.clienteRepository.findById(id);
-
-		return c.orElseThrow(() -> new ObjectNotFoundException(
-				"Cliente não encontrado. Id: " + id + ", Tipo: " + Cliente.class.getName()));
+		if (!c.isPresent()) {
+			throw new ObjectNotFoundException("Cliente não encontrado pelo id: " + id + ", Objeto :" + Cliente.class.getName()); 
+		}
+		return this.parseEntityToDto(c.get());
 	}
-
+	
+	public Cliente parseDtoToEntity(ClienteDto cDto) {
+		Cliente c = new Cliente(cDto.getId(), cDto.getNome(), cDto.getCpfOuCnpj(), TipoCliente.toEnum(cDto.getTipo()));		
+		return c;
+	}
+	
+	public ClienteDto parseEntityToDto(Cliente c) {
+		ClienteDto cDto = new ClienteDto(c);
+		return cDto;
+	}
 }

@@ -1,6 +1,6 @@
 package com.effs.estoque.services;
 
-import com.effs.estoque.domain.Categoria;
+import com.effs.estoque.dto.CategoriaDto;
 
 /**
  * @author eduardosatyra
@@ -8,5 +8,9 @@ import com.effs.estoque.domain.Categoria;
  */
 public interface CategoriaService {
 
-	Categoria find(Integer id);
+	CategoriaDto find(Integer id);
+	
+	CategoriaDto insert(CategoriaDto cDto);
+	
+	CategoriaDto update(CategoriaDto cDto);
 }
