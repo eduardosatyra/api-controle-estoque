@@ -13,6 +13,7 @@ import com.effs.estoque.domain.Cidade;
 import com.effs.estoque.domain.Cliente;
 import com.effs.estoque.domain.Endereco;
 import com.effs.estoque.domain.Estado;
+import com.effs.estoque.domain.ItemPedido;
 import com.effs.estoque.domain.Pagamento;
 import com.effs.estoque.domain.PagamentoComBoleto;
 import com.effs.estoque.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.effs.estoque.repositories.CidadeRepository;
 import com.effs.estoque.repositories.ClienteRepository;
 import com.effs.estoque.repositories.EnderecoRepository;
 import com.effs.estoque.repositories.EstadoRepository;
+import com.effs.estoque.repositories.ItemPedidoRepository;
 import com.effs.estoque.repositories.PagamentoRepository;
 import com.effs.estoque.repositories.PedidoRepository;
 import com.effs.estoque.repositories.ProdutoRepository;
@@ -54,6 +56,8 @@ public class SpringMvcControleApplication implements CommandLineRunner{
 	private PedidoRepository pedidoRepository;
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -108,20 +112,37 @@ public class SpringMvcControleApplication implements CommandLineRunner{
 		this.enderecoRepository.saveAll(Arrays.asList(end1Cli1, end2Cli1, end3Cli2, end4Cli3));
 		
 		Pedido ped1 = new Pedido(null, sdf.parse("30/09/2017 10:32"), cli1, end1Cli1);
-		Pedido ped2 = new Pedido(null, sdf.parse("15/07/2015 01:32"), cli2, end3Cli2);
-		Pedido ped3 = new Pedido(null, sdf.parse("09/08/2016 15:38"), cli3, end4Cli3);
-		
 		Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
 		ped1.setPagamento(pagto1);
+		
+		Pedido ped2 = new Pedido(null, sdf.parse("15/07/2015 01:32"), cli2, end3Cli2);
 		Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, sdf.parse("20/10/2018 00:00"), null);
 		ped2.setPagamento(pagto2);
 		
+		Pedido ped3 = new Pedido(null, sdf.parse("09/08/2016 15:38"), cli3, end4Cli3);
+		Pagamento pagto3 = new PagamentoComCartao(null, EstadoPagamento.CANCELADO, ped3, 2);
+		ped3.setPagamento(pagto3);
+		
 		cli1.getPedidos().addAll(Arrays.asList(ped1));
 		cli2.getPedidos().addAll(Arrays.asList(ped2));
+		cli3.getPedidos().addAll(Arrays.asList(ped3));
 		
 		this.pedidoRepository.saveAll(Arrays.asList(ped1, ped2, ped3));
-		this.pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
+		this.pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2, pagto3));
 		
+		ItemPedido ip1 = new ItemPedido(ped1, prod1, 50.0, 2, 2000.0);
+		ItemPedido ip2 = new ItemPedido(ped2, prod2, 0.0, 5, 300.0);
+		ItemPedido ip3 = new ItemPedido(ped3, prod3, 0.0, 1, 80.0);
+		
+		ped1.getItems().addAll(Arrays.asList(ip1));
+		ped2.getItems().addAll(Arrays.asList(ip2));
+		ped3.getItems().addAll(Arrays.asList(ip3));
+		
+		prod1.getItems().addAll(Arrays.asList(ip1));
+		prod2.getItems().addAll(Arrays.asList(ip2));
+		prod3.getItems().addAll(Arrays.asList(ip3));
+		
+		this.itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
 	}
 
 }
