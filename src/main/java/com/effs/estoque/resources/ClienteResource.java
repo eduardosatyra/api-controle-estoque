@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.effs.estoque.domain.Cliente;
 import com.effs.estoque.dto.ClienteDto;
 import com.effs.estoque.services.ClienteService;
 
@@ -24,7 +23,7 @@ public class ClienteResource {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<ClienteDto> find(@PathVariable("id") Integer id){
-		Cliente cli = this.clienteService.find(id);		
+		ClienteDto cli = this.clienteService.find(id);	
 		return ResponseEntity.ok().body(cli);
 	}
 }

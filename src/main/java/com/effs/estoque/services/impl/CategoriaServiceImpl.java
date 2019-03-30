@@ -3,12 +3,14 @@ package com.effs.estoque.services.impl;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.effs.estoque.domain.Categoria;
 import com.effs.estoque.dto.CategoriaDto;
 import com.effs.estoque.repositories.CategoriaRepository;
 import com.effs.estoque.services.CategoriaService;
+import com.effs.estoque.services.exception.DataIntegrityException;
 import com.effs.estoque.services.exception.ObjectNotFoundException;
 
 /**
@@ -41,10 +43,22 @@ public class CategoriaServiceImpl implements CategoriaService {
 
 	@Override
 	public CategoriaDto update(CategoriaDto cDto) {
-		Categoria c = this.find(cDto.getId());
-		c = this.parseDtoToEntity(cDto);
+		Categoria c = this.parseDtoToEntity(cDto);
+		cDto = this.find(cDto.getId());
 		c = this.categoriaRepository.saveAndFlush(c);
 		return cDto = this.parseEntityToDto(c);
+	}
+
+	@Override
+	public void delete(Integer id) {
+		CategoriaDto cDto = this.find(id);
+		Categoria c = this.parseDtoToEntity(cDto);
+		try {
+			this.categoriaRepository.delete(c);
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityException(
+					"Existem Produtos relácionados a essa categoria, não foi possível deletar");
+		}
 	}
 
 	public Categoria parseDtoToEntity(CategoriaDto cDto) {
