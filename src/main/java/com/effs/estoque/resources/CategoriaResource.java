@@ -1,6 +1,7 @@
 package com.effs.estoque.resources;
 
 import java.net.URI;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -35,6 +36,12 @@ public class CategoriaResource {
 	public ResponseEntity<CategoriaDto> find(@PathVariable("id") Integer id) {
 		CategoriaDto cDto = this.categoriaService.find(id);
 		return ResponseEntity.ok().body(cDto);
+	}
+	
+	@GetMapping
+	public ResponseEntity<List<CategoriaDto>> findAll() {
+		List<CategoriaDto> cDtoList = this.categoriaService.findAll();
+		return ResponseEntity.ok().body(cDtoList);
 	}
 
 	@PostMapping

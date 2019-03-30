@@ -1,6 +1,9 @@
 package com.effs.estoque.services.impl;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -59,6 +62,18 @@ public class CategoriaServiceImpl implements CategoriaService {
 			throw new DataIntegrityException(
 					"Existem Produtos relácionados a essa categoria, não foi possível deletar");
 		}
+	}
+
+	@Override
+	public List<CategoriaDto> findAll() {
+		List<Categoria> cList = new ArrayList<>();
+		cList = this.categoriaRepository.findAll();
+		if (cList.isEmpty()) {
+			throw new ObjectNotFoundException("Nenhuma categoria encontrada.");
+		}
+		List<CategoriaDto> cDtoList = cList.stream().map(cDto -> new CategoriaDto(cDto.getId(), cDto.getNome()))
+				.collect(Collectors.toList());
+		return cDtoList;
 	}
 
 	public Categoria parseDtoToEntity(CategoriaDto cDto) {

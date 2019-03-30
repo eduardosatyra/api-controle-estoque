@@ -33,6 +33,11 @@ public class CategoriaDto implements Serializable {
 		this.id = c.getId();
 		this.nome = c.getNome();
 		this.getProdutos().addAll(c.getProdutos());
+	}	
+
+	public CategoriaDto(Integer id, String nome) {
+		this.id = id;
+		this.nome = nome;
 	}
 
 	public Integer getId() {

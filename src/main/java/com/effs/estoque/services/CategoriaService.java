@@ -1,5 +1,7 @@
 package com.effs.estoque.services;
 
+import java.util.List;
+
 import com.effs.estoque.dto.CategoriaDto;
 
 /**
@@ -15,4 +17,6 @@ public interface CategoriaService {
 	CategoriaDto update(CategoriaDto cDto);
 	
 	void delete(Integer id);
+	
+	List<CategoriaDto> findAll();
 }
