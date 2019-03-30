@@ -2,6 +2,8 @@ package com.effs.estoque.services;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+
 import com.effs.estoque.dto.CategoriaDto;
 
 /**
@@ -19,4 +21,6 @@ public interface CategoriaService {
 	void delete(Integer id);
 	
 	List<CategoriaDto> findAll();
+	
+	Page<CategoriaDto> findPage(Integer page, Integer linesPerPage, String orderBy, String direction);
 }

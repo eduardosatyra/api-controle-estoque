@@ -11,6 +11,7 @@ import com.effs.estoque.domain.Categoria;
  */
 
 @Repository
-public interface CategoriaRepository extends JpaRepository<Categoria, Integer>{
+public interface CategoriaRepository extends JpaRepository<Categoria, Integer> {
 
+	Categoria findByNome(String nome);
 }

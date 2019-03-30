@@ -1,4 +1,4 @@
-package com.effs.estoque.resources;
+package com.effs.estoque.resources.get;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -7,23 +7,24 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.effs.estoque.domain.Pedido;
-import com.effs.estoque.services.PedidoService;
+import com.effs.estoque.domain.Produto;
+import com.effs.estoque.services.ProdutoService;
 
 /**
  * @author eduardosatyra
  *
  */
+
 @RestController
-@RequestMapping(value = "/api/v1/pedidos")
-public class PedidoResource {
+@RequestMapping(value = "/api/v1/produtos")
+public class ProdutoBuscaResource {
 
 	@Autowired
-	private PedidoService pedidoService;
-
+	private ProdutoService produtoService;
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<?> find(@PathVariable("id") Integer id) {
-		Pedido p = this.pedidoService.find(id);
+		Produto p = this.produtoService.find(id);
 		return ResponseEntity.ok().body(p);
 	}
 }

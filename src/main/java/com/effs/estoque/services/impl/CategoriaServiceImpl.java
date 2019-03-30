@@ -7,6 +7,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.effs.estoque.domain.Categoria;
@@ -38,7 +41,11 @@ public class CategoriaServiceImpl implements CategoriaService {
 
 	@Override
 	public CategoriaDto insert(CategoriaDto cDto) {
-		Categoria c = this.parseDtoToEntity(cDto);
+		Categoria c = this.categoriaRepository.findByNome(cDto.getNome());
+		if (c != null) {
+			throw new ObjectNotFoundException("FODASE TROCO DEPOIS");
+		}
+		c = this.parseDtoToEntity(cDto);
 		c.setId(null);
 		c = this.categoriaRepository.saveAndFlush(c);
 		return this.parseEntityToDto(c);
@@ -71,9 +78,20 @@ public class CategoriaServiceImpl implements CategoriaService {
 		if (cList.isEmpty()) {
 			throw new ObjectNotFoundException("Nenhuma categoria encontrada.");
 		}
-		List<CategoriaDto> cDtoList = cList.stream().map(cDto -> new CategoriaDto(cDto.getId(), cDto.getNome()))
+		List<CategoriaDto> cDtoList = cList.stream().map(c -> new CategoriaDto(c))
 				.collect(Collectors.toList());
 		return cDtoList;
+	}
+
+	@Override
+	public Page<CategoriaDto> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		Page<Categoria> pageList = this.categoriaRepository.findAll(pageRequest);
+		if (pageList.isEmpty()) {
+			throw new ObjectNotFoundException("Nenhuma categoria encontrada.");
+		}
+		Page<CategoriaDto> pageDto = pageList.map(c -> new CategoriaDto(c));
+		return pageDto;
 	}
 
 	public Categoria parseDtoToEntity(CategoriaDto cDto) {
