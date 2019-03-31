@@ -1,17 +1,30 @@
 package com.effs.estoque.dto;
 
+import java.io.Serializable;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+
 import com.effs.estoque.domain.Cliente;
 
 /**
  * @author eduardosatyra
  *
  */
-public class ClienteDto {
+public class ClienteDto implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	private Integer id;
+	
+	@NotEmpty(message = "Preenchimento obrigatorio")
+	@Length(min = 5, max = 80, message = "O tamanho deve ser entra 5 e 80 caracteres")
 	private String nome;
-	private String cpfOuCnpj;
-	private Integer tipo;
+	
+	@NotEmpty(message = "Preenchimento obrigatorio")
+	@Email
+	private String email;
 
 	public ClienteDto() {
 	}
@@ -19,8 +32,7 @@ public class ClienteDto {
 	public ClienteDto(Cliente c) {
 		this.id = c.getId();
 		this.nome = c.getNome();
-		this.cpfOuCnpj = c.getCpfOuCnpj();
-		this.tipo = c.getTipo().getCod();
+		this.email = c.getEmail();
 	}
 
 	public Integer getId() {
@@ -39,19 +51,11 @@ public class ClienteDto {
 		this.nome = nome;
 	}
 
-	public String getCpfOuCnpj() {
-		return cpfOuCnpj;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setCpfOuCnpj(String cpfOuCnpj) {
-		this.cpfOuCnpj = cpfOuCnpj;
-	}
-
-	public Integer getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(Integer tipo) {
-		this.tipo = tipo;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }

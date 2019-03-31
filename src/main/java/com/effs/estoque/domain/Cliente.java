@@ -33,6 +33,9 @@ public class Cliente implements Serializable {
 	@Column(name = "NOME")
 	private String nome;
 
+	@Column(name = "EMAIL")
+	private String email;
+
 	@Column(name = "CPF_CNPJ")
 	private String cpfOuCnpj;
 
@@ -53,11 +56,12 @@ public class Cliente implements Serializable {
 	public Cliente() {
 	}
 
-	public Cliente(Integer id, String nome, String cpfOuCnpj, TipoCliente tipo) {
+	public Cliente(Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipo) {
 		this.id = id;
 		this.nome = nome;
+		this.email = email;
 		this.cpfOuCnpj = cpfOuCnpj;
-		this.tipo = tipo.getCod();
+		this.tipo = (tipo == null) ? null : tipo.getCod();
 	}
 
 	public Integer getId() {
@@ -74,6 +78,14 @@ public class Cliente implements Serializable {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getCpfOuCnpj() {
