@@ -26,15 +26,9 @@ public class ClienteBuscaResource {
 	@Autowired
 	private ClienteService clienteService;
 	
-	@GetMapping("/complete/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<Cliente> findComplete(@PathVariable("id") Integer id){
 		Cliente cli = this.clienteService.findComplete(id);	
-		return ResponseEntity.ok().body(cli);
-	}
-	
-	@GetMapping("/{id}")
-	public ResponseEntity<ClienteDto> find(@PathVariable("id") Integer id){
-		ClienteDto cli = this.clienteService.find(id);	
 		return ResponseEntity.ok().body(cli);
 	}
 	
