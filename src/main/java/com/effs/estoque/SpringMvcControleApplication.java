@@ -109,9 +109,9 @@ public class SpringMvcControleApplication implements CommandLineRunner{
 		Endereco end2Cli1 = new Endereco(null, "Rua teste Old", "64", "Casa amarela Old", "Jd teste Old", "03535-050", cd1, cli1);
 		Endereco end3Cli2 = new Endereco(null, "Rua teste cliente 2", "4", "Casa Azul", "Jd teste cli 2", "02222-000", cd2, cli2);
 		Endereco end4Cli3= new Endereco(null, "Rua teste cliente 3", "6", "Casa Verde", "Jd teste cli 3", "33333-000", cd3, cli3);
-		cli1.getEnderecos().addAll(Arrays.asList(end1Cli1, end2Cli1, end3Cli2, end4Cli3));
-		cli2.getEnderecos().addAll(Arrays.asList(end3Cli2));
-		cli3.getEnderecos().addAll(Arrays.asList(end4Cli3));
+		cli1.getEndereco().addAll(Arrays.asList(end1Cli1, end2Cli1, end3Cli2, end4Cli3));
+		cli2.getEndereco().addAll(Arrays.asList(end3Cli2));
+		cli3.getEndereco().addAll(Arrays.asList(end4Cli3));
 		
 		this.clienteRepository.saveAll(Arrays.asList(cli1, cli2, cli3));
 		this.enderecoRepository.saveAll(Arrays.asList(end1Cli1, end2Cli1, end3Cli2, end4Cli3));

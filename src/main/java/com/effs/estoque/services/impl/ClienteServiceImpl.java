@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -11,9 +13,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.effs.estoque.domain.Cidade;
 import com.effs.estoque.domain.Cliente;
+import com.effs.estoque.domain.Endereco;
+import com.effs.estoque.domain.enums.TipoCliente;
 import com.effs.estoque.dto.ClienteDto;
+import com.effs.estoque.dto.ClienteNewDto;
+import com.effs.estoque.dto.EnderecoDto;
 import com.effs.estoque.repositories.ClienteRepository;
+import com.effs.estoque.repositories.EnderecoRepository;
 import com.effs.estoque.services.ClienteService;
 import com.effs.estoque.services.exception.DataIntegrityException;
 import com.effs.estoque.services.exception.ObjectNotFoundException;
@@ -26,8 +34,20 @@ import com.effs.estoque.services.exception.ObjectNotFoundException;
 public class ClienteServiceImpl implements ClienteService {
 
 	@Autowired
-	ClienteRepository clienteRepository;
+	private ClienteRepository clienteRepository;
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 
+	@Override
+	public Cliente findComplete(Integer id) {
+		Optional<Cliente> cli = this.clienteRepository.findById(id);
+		if (!cli.isPresent()) {
+			throw new ObjectNotFoundException(
+					"Cliente não encontrado pelo id: " + id + ", Objeto :" + Cliente.class.getName());
+		}
+		return cli.get();
+	}
+	
 	@Override
 	public ClienteDto find(Integer id) {
 		Optional<Cliente> c = this.clienteRepository.findById(id);
@@ -72,14 +92,34 @@ public class ClienteServiceImpl implements ClienteService {
 
 	@Override
 	public void delete(Integer id) {
-		ClienteDto cDto = this.find(id);
-		Cliente c = this.parseDtoToEntity(cDto);
+		Cliente c = this.findComplete(id);
 		try {
 			this.clienteRepository.delete(c);
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException(
-					"Não é possível excluir porque há entidades relacionadas.");
+					"Não é possível excluir porque há pedidos relacionadas.");
 		}
+	}
+
+	@Transactional
+	@Override
+	public ClienteNewDto insert(ClienteNewDto cDto) {
+		Cliente cli = this.parseClienteNewDtoToEntity(cDto);
+		cli = this.clienteRepository.saveAndFlush(cli);
+		this.enderecoRepository.saveAll(cli.getEndereco());
+		cDto.setId(cli.getId());
+		return cDto;
+	}
+	
+	public Cliente parseClienteNewDtoToEntity(ClienteNewDto cn) {
+		Cliente c = new Cliente(null, cn.getNome(), cn.getEmail(), cn.getCpfOuCnpj(), TipoCliente.toEnum(cn.getTipo()));		
+		c.getTelefones().addAll(cn.getTelefones());		
+		for (EnderecoDto eDto : cn.getEnderecos()) {
+			Cidade cid = new Cidade(eDto.getCidade().getId(), null, null);
+			Endereco end = new Endereco(null, eDto.getLogradouro(), eDto.getNumero(), eDto.getComplemento(), eDto.getBairro(), eDto.getCep(), cid, c);
+			c.getEndereco().add(end);
+		}
+		return c;
 	}
 
 	public Cliente parseDtoToEntity(ClienteDto cDto) {

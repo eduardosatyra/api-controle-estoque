@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 
+import com.effs.estoque.domain.Cliente;
 import com.effs.estoque.dto.ClienteDto;
+import com.effs.estoque.dto.ClienteNewDto;
 
 /**
  * @author eduardosatyra
@@ -21,4 +23,8 @@ public interface ClienteService {
 	ClienteDto update(ClienteDto cDto);
 
 	void delete(Integer id);
+
+	Cliente findComplete(Integer id);
+
+	ClienteNewDto insert(ClienteNewDto cDto);
 }

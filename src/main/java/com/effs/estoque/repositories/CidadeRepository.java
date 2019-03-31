@@ -8,6 +8,7 @@ import com.effs.estoque.domain.Cidade;
  * @author eduardosatyra
  *
  */
-public interface CidadeRepository extends JpaRepository<Cidade, Integer>{
+public interface CidadeRepository extends JpaRepository<Cidade, Integer> {
 
+	Cidade findByNome(String nome);
 }

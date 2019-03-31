@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.effs.estoque.domain.Cliente;
 import com.effs.estoque.dto.ClienteDto;
 import com.effs.estoque.services.ClienteService;
 
@@ -24,6 +25,12 @@ public class ClienteBuscaResource {
 
 	@Autowired
 	private ClienteService clienteService;
+	
+	@GetMapping("/complete/{id}")
+	public ResponseEntity<Cliente> findComplete(@PathVariable("id") Integer id){
+		Cliente cli = this.clienteService.findComplete(id);	
+		return ResponseEntity.ok().body(cli);
+	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<ClienteDto> find(@PathVariable("id") Integer id){
