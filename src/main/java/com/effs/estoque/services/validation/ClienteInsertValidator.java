@@ -6,8 +6,12 @@ import java.util.List;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.effs.estoque.domain.Cliente;
 import com.effs.estoque.domain.enums.TipoCliente;
 import com.effs.estoque.dto.ClienteNewDto;
+import com.effs.estoque.repositories.ClienteRepository;
 import com.effs.estoque.resources.exceptions.FieldMessage;
 import com.effs.estoque.services.validation.utils.BR;
 
@@ -17,6 +21,9 @@ import com.effs.estoque.services.validation.utils.BR;
  */
 public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert, ClienteNewDto> {
 
+	@Autowired
+	private ClienteRepository clienteRepository;
+	
 	@Override
 	public void initialize(ClienteInsert ann) {
 	}
@@ -26,6 +33,11 @@ public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert
 
 		List<FieldMessage> list = new ArrayList<>();
 
+		Cliente c = this.clienteRepository.findByEmail(objDto.getEmail());
+		if (c != null) {
+			list.add(new FieldMessage("email", "E-mail já cadastrado"));
+		}
+		
 		if (objDto.getTipo().equals(TipoCliente.PESSOAFISICA.getCod()) && !BR.isValidCPF(objDto.getCpfOuCnpj())) {
 			list.add(new FieldMessage("cpfOuCnpj", "CPF inválido"));
 		}
