@@ -156,7 +156,7 @@ public class SpringMvcControleApplication implements CommandLineRunner{
 		this.pedidoRepository.saveAll(Arrays.asList(ped1, ped2, ped3));
 		this.pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2, pagto3));
 		
-		ItemPedido ip1 = new ItemPedido(ped1, prod1, 50.0, 2, 2000.0);
+		ItemPedido ip1 = new ItemPedido(ped1, prod1, 0.0, 2, 2000.0);
 		ItemPedido ip2 = new ItemPedido(ped2, prod2, 0.0, 5, 300.0);
 		ItemPedido ip3 = new ItemPedido(ped3, prod3, 0.0, 1, 80.0);
 		
