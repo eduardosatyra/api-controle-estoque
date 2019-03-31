@@ -6,19 +6,38 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+
+import com.effs.estoque.services.validation.ClienteInsert;
+
 /**
  * @author eduardosatyra
  *
  */
+
+@ClienteInsert
 public class ClienteNewDto implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Integer id;
+	
+	@NotEmpty(message = "Preenchimento obrigatório")
+	@Length(min = 3, max = 80, message = "O tamanho deve ser entra 3 e 80 caracteres")
 	private String nome;
+	
+	@NotEmpty(message = "Preenchimento obrigatório")
+	@Email(message = "Email inválido")
 	private String email;
+	
+	@NotEmpty(message = "Preenchimento obrigatório")
 	private String cpfOuCnpj;
 	private Integer tipo;
 	private List<EnderecoDto> enderecosDto = new ArrayList<>();
+	
+	@NotEmpty(message = "Pelo menos 1 telefone é obrigatório")
 	private Set<String> telefoneDto = new HashSet<>();
 
 	public ClienteNewDto() {
