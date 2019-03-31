@@ -18,7 +18,7 @@ public class CategoriaDto implements Serializable {
 	private Integer id;
 
 	@NotEmpty(message = "Preenchimento obrigatório")
-	@Length(min = 5, max = 80, message = "O tamanho deve ser entra 5 e 80 caracteres")
+	@Length(min = 3, max = 80, message = "O tamanho deve ser entra 5 e 80 caracteres")
 	private String nome;
 	
 	public CategoriaDto() {

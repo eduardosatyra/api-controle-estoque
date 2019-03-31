@@ -26,7 +26,7 @@ public class CategoriaAlteraResource {
 	private CategoriaService categoriaService;
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Void> update(@PathVariable("id") Integer id, @Valid @RequestBody CategoriaDto cDto) {
+	public ResponseEntity<Void> update(@Valid @RequestBody CategoriaDto cDto, @PathVariable("id") Integer id) {
 		cDto.setId(id);
 		cDto = this.categoriaService.update(cDto);
 		return ResponseEntity.noContent().build();
