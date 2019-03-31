@@ -53,8 +53,11 @@ public class CategoriaServiceImpl implements CategoriaService {
 
 	@Override
 	public CategoriaDto update(CategoriaDto cDto) {
-		Categoria c = this.parseDtoToEntity(cDto);
-		cDto = this.find(cDto.getId());
+		Categoria c = this.categoriaRepository.getOne(cDto.getId());
+		if (c == null) {
+			throw new ObjectNotFoundException("Nenhuma categoria encontrado para o id: " + cDto.getId());
+		}
+		updateData(cDto, c);
 		c = this.categoriaRepository.saveAndFlush(c);
 		return cDto = this.parseEntityToDto(c);
 	}
@@ -102,5 +105,9 @@ public class CategoriaServiceImpl implements CategoriaService {
 	public CategoriaDto parseEntityToDto(Categoria c) {
 		CategoriaDto cDto = new CategoriaDto(c);
 		return cDto;
+	}
+
+	private void updateData(CategoriaDto cDto, Categoria c) {
+		c.setNome(cDto.getNome());
 	}
 }
