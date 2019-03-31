@@ -8,11 +8,13 @@ import javax.validation.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Length;
 
 import com.effs.estoque.domain.Cliente;
+import com.effs.estoque.services.validation.ClienteUpdate;
 
 /**
  * @author eduardosatyra
  *
  */
+@ClienteUpdate
 public class ClienteDto implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -23,7 +25,7 @@ public class ClienteDto implements Serializable {
 	private String nome;
 	
 	@NotEmpty(message = "Preenchimento obrigatorio")
-	@Email
+	@Email(message = "E-mail inválido")
 	private String email;
 
 	public ClienteDto() {
