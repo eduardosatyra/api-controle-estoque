@@ -94,14 +94,14 @@ public class PedidoServiceImpl implements PedidoService {
 		this.pagamentoRepository.save(p.getPagamento());
 		
 		for (ItemPedidoDto item : pDto.getItems()) {
-			Produto prod = this.produtoRepository.getOne(item.getProduto().getId());
-			if (prod == null) {
+			Optional<Produto> prod = this.produtoRepository.findById(item.getProduto().getId());
+			if (!prod.isPresent()) {
 				throw new ObjectNotFoundException("Pedido não inserido, Produto não encontrado pelo id: " + item.getProduto().getId());
 			}
 			ItemPedido i = new ItemPedido();
-			i.getId().setProduto(prod);
+			i.getId().setProduto(prod.get());
 			i.getId().setPedido(p);
-			i.setPreco(prod.getPreco());
+			i.setPreco(prod.get().getPreco());
 			i.setQuantidade(item.getQuantidade());
 			i.setDesconto(0.0);
 			p.getItems().add(i);
