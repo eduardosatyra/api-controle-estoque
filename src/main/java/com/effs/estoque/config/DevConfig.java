@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import com.effs.estoque.services.DBService;
+import com.effs.estoque.services.EmailService;
+import com.effs.estoque.services.SmtpEmailService;
 
 /**
  * @author eduardosatyra
@@ -18,16 +20,21 @@ public class DevConfig {
 
 	@Autowired
 	private DBService db;
-	
+
 	@Value("${spring.jpa.hibernate.ddl-auto}")
 	private String strategy;
-	
+
 	@Bean
 	public boolean instantiateDataBase() throws Exception {
 		if (!"create".equals(strategy)) {
 			return false;
-		}		
+		}
 		db.instantiateTestDataBase();
 		return true;
+	}
+
+	@Bean
+	public EmailService emailService() {
+		return new SmtpEmailService();
 	}
 }
