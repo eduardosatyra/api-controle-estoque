@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import com.effs.estoque.services.DBService;
+import com.effs.estoque.services.MockEmailService;
 
 /**
  * @author eduardosatyra
@@ -22,5 +23,10 @@ public class TestConfig {
 	public boolean instantiateDataBase() throws Exception {
 		db.instantiateTestDataBase();
 		return true;
+	}
+	
+	@Bean
+	public MockEmailService emailService() {
+		return new MockEmailService();
 	}
 }

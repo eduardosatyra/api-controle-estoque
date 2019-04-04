@@ -26,6 +26,7 @@ import com.effs.estoque.repositories.ItemPedidoRepository;
 import com.effs.estoque.repositories.PagamentoRepository;
 import com.effs.estoque.repositories.PedidoRepository;
 import com.effs.estoque.services.ClienteService;
+import com.effs.estoque.services.EmailService;
 import com.effs.estoque.services.PedidoService;
 import com.effs.estoque.services.ProdutoService;
 import com.effs.estoque.services.exception.ObjectNotFoundException;
@@ -49,6 +50,8 @@ public class PedidoServiceImpl implements PedidoService {
 	private ProdutoService produtoService;
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
+	@Autowired
+	private EmailService emailService;
 	
 	@Override
 	public Pedido find(Integer id) {
@@ -101,7 +104,7 @@ public class PedidoServiceImpl implements PedidoService {
 			p.getItems().add(i);
 		}
 		itemPedidoRepository.saveAll(p.getItems());
-		System.out.println(p);
+		emailService.sendOrderConfirmationEmail(p);
 		return p;
 	}
 
