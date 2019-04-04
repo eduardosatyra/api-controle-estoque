@@ -1,6 +1,8 @@
 package com.effs.estoque.domain;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -109,4 +111,21 @@ public class ItemPedido implements Serializable {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+		StringBuilder builder = new StringBuilder();
+		builder.append("Nome produto: ");
+		builder.append(this.getProduto().getNome());
+		builder.append(", Quantidade: ");
+		builder.append(this.getQuantidade());
+		builder.append(", Preço unitário: ");
+		builder.append(nf.format(this.getPreco()));
+		builder.append(", Subtotal: ");
+		builder.append(nf.format(this.getSubTotal()));
+		builder.append("\n");
+		return builder.toString();
+	}
+	
 }

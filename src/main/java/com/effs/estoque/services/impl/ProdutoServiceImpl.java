@@ -36,7 +36,7 @@ public class ProdutoServiceImpl implements ProdutoService {
 	public Produto find(Integer id) {
 		Optional<Produto> p = this.produtoRepository.findById(id);
 		return p.orElseThrow(() -> new ObjectNotFoundException(
-				"Objeto não encontrado. Id: " + id + ", Tipo: " + Produto.class.getName()));
+				"Produto não encontrado. Id: " + id + ", Tipo: " + Produto.class.getName()));
 	}
 
 	@Override
