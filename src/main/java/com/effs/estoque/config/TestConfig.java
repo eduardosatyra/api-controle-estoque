@@ -6,7 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import com.effs.estoque.services.DBService;
-import com.effs.estoque.services.MockEmailService;
+import com.effs.estoque.services.EmailService;
+import com.effs.estoque.services.SmtpEmailService;
 
 /**
  * @author eduardosatyra
@@ -25,8 +26,14 @@ public class TestConfig {
 		return true;
 	}
 	
+//	para mockar o envio de e-mail	
+//	@Bean
+//	public MockEmailService emailService() {
+//		return new MockEmailService();
+//	}
+	
 	@Bean
-	public MockEmailService emailService() {
-		return new MockEmailService();
+	public EmailService emailService() {
+		return new SmtpEmailService();
 	}
 }
