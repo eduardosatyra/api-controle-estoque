@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.effs.estoque.domain.Categoria;
@@ -55,6 +56,8 @@ public class DBService {
 	private PagamentoRepository pagamentoRepository;
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
+	@Autowired
+	private BCryptPasswordEncoder bCrypt;
 	
 	public void instantiateTestDataBase() throws Exception {
 		
@@ -115,11 +118,11 @@ public class DBService {
 		this.estadoRepository.saveAll(Arrays.asList(e1, e2, e3));
 		this.cidadeRepository.saveAll(Arrays.asList(cd1, cd2, cd3));
 		
-		Cliente cli1 = new Cliente(null, "Jose Farias", "edufelipefreitas2@gmail.com", "57832532009", TipoCliente.PESSOAFISICA);
+		Cliente cli1 = new Cliente(null, "Jose Farias", "edufelipefreitas2@gmail.com", "57832532009", bCrypt.encode("123"), TipoCliente.PESSOAFISICA);
 		cli1.getTelefones().addAll(Arrays.asList("11111111111"));
-		Cliente cli2 = new Cliente(null, "Renata Goncalves", "renatagoncalves@hotmail.com", "98443547065", TipoCliente.PESSOAFISICA);
+		Cliente cli2 = new Cliente(null, "Renata Goncalves", "renatagoncalves@hotmail.com", "98443547065", bCrypt.encode("321"), TipoCliente.PESSOAFISICA);
 		cli2.getTelefones().addAll(Arrays.asList("11222222222"));
-		Cliente cli3 = new Cliente(null, "Raimunda Nonota", "raimundanonata@yahoo.com.br", "65708207000160", TipoCliente.PESSOAJURIDICA);
+		Cliente cli3 = new Cliente(null, "Raimunda Nonota", "raimundanonata@yahoo.com.br", "65708207000160", bCrypt.encode("123"), TipoCliente.PESSOAJURIDICA);
 		cli3.getTelefones().addAll(Arrays.asList("11333333333"));
 		
 		Endereco end1Cli1 = new Endereco(null, "Rua teste", "46", "Casa amarela", "Jd teste", "03535-000", cd1, cli1);

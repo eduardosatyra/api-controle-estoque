@@ -23,20 +23,24 @@ public class ClienteNewDto implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Integer id;
-	
+
 	@NotEmpty(message = "Preenchimento obrigatório")
 	@Length(min = 3, max = 80, message = "O tamanho deve ser entra 3 e 80 caracteres")
 	private String nome;
-	
+
 	@NotEmpty(message = "Preenchimento obrigatório")
 	@Email(message = "Email inválido")
 	private String email;
-	
+
 	@NotEmpty(message = "Preenchimento obrigatório")
 	private String cpfOuCnpj;
+
+	@NotEmpty(message = "Preenchimento obrigatório")
+	private String senha;
+
 	private Integer tipo;
 	private List<EnderecoDto> enderecosDto = new ArrayList<>();
-	
+
 	@NotEmpty(message = "Pelo menos 1 telefone é obrigatório")
 	private Set<String> telefoneDto = new HashSet<>();
 
@@ -73,6 +77,14 @@ public class ClienteNewDto implements Serializable {
 
 	public void setCpfOuCnpj(String cpfOuCnpj) {
 		this.cpfOuCnpj = cpfOuCnpj;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
 
 	public Integer getTipo() {

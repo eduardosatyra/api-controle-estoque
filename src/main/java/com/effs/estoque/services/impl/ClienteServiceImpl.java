@@ -11,6 +11,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.effs.estoque.domain.Cidade;
@@ -37,6 +38,8 @@ public class ClienteServiceImpl implements ClienteService {
 	private ClienteRepository clienteRepository;
 	@Autowired
 	private EnderecoRepository enderecoRepository;
+	@Autowired
+	private BCryptPasswordEncoder bCrypt;
 
 	@Override
 	public Cliente findComplete(Integer id) {
@@ -112,7 +115,7 @@ public class ClienteServiceImpl implements ClienteService {
 	}
 	
 	public Cliente parseClienteNewDtoToEntity(ClienteNewDto cn) {
-		Cliente c = new Cliente(null, cn.getNome(), cn.getEmail(), cn.getCpfOuCnpj(), TipoCliente.toEnum(cn.getTipo()));		
+		Cliente c = new Cliente(null, cn.getNome(), cn.getEmail(), cn.getCpfOuCnpj(), bCrypt.encode(cn.getSenha()), TipoCliente.toEnum(cn.getTipo()));		
 		c.getTelefones().addAll(cn.getTelefones());		
 		for (EnderecoDto eDto : cn.getEnderecos()) {
 			Cidade cid = new Cidade(eDto.getCidade().getId(), null, null);
@@ -122,9 +125,9 @@ public class ClienteServiceImpl implements ClienteService {
 		return c;
 	}
 
-	public Cliente parseDtoToEntity(ClienteDto cDto) {
-		return new Cliente(cDto.getId(), cDto.getNome(), cDto.getEmail(), null, null);
-	}
+//	public Cliente parseDtoToEntity(ClienteDto cDto) {
+//		return new Cliente(cDto.getId(), cDto.getNome(), cDto.getEmail(), null, null, null);
+//	}
 
 	public ClienteDto parseEntityToDto(Cliente c) {
 		ClienteDto cDto = new ClienteDto(c);
