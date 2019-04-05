@@ -19,6 +19,7 @@ import com.effs.estoque.domain.PagamentoComCartao;
 import com.effs.estoque.domain.Pedido;
 import com.effs.estoque.domain.Produto;
 import com.effs.estoque.domain.enums.EstadoPagamento;
+import com.effs.estoque.domain.enums.Perfil;
 import com.effs.estoque.domain.enums.TipoCliente;
 import com.effs.estoque.repositories.CategoriaRepository;
 import com.effs.estoque.repositories.CidadeRepository;
@@ -118,23 +119,29 @@ public class DBService {
 		this.estadoRepository.saveAll(Arrays.asList(e1, e2, e3));
 		this.cidadeRepository.saveAll(Arrays.asList(cd1, cd2, cd3));
 		
-		Cliente cli1 = new Cliente(null, "Jose Farias", "edufelipefreitas2@gmail.com", "57832532009", bCrypt.encode("123"), TipoCliente.PESSOAFISICA);
+		Cliente cli1 = new Cliente(null, "Jose Farias", "testeste@gmail.com", "57832532009", bCrypt.encode("123"), TipoCliente.PESSOAFISICA);
 		cli1.getTelefones().addAll(Arrays.asList("11111111111"));
 		Cliente cli2 = new Cliente(null, "Renata Goncalves", "renatagoncalves@hotmail.com", "98443547065", bCrypt.encode("321"), TipoCliente.PESSOAFISICA);
 		cli2.getTelefones().addAll(Arrays.asList("11222222222"));
 		Cliente cli3 = new Cliente(null, "Raimunda Nonota", "raimundanonata@yahoo.com.br", "65708207000160", bCrypt.encode("123"), TipoCliente.PESSOAJURIDICA);
 		cli3.getTelefones().addAll(Arrays.asList("11333333333"));
 		
+		Cliente cli4 = new Cliente(null, "Eduardo Satyra", "edufelipefreitas2@gmail.com", "51965996060", bCrypt.encode("admin"), TipoCliente.PESSOAFISICA);
+		cli4.getTelefones().addAll(Arrays.asList("11333333333"));
+		cli4.addPerfil(Perfil.ADMIN);
+		
 		Endereco end1Cli1 = new Endereco(null, "Rua teste", "46", "Casa amarela", "Jd teste", "03535-000", cd1, cli1);
 		Endereco end2Cli1 = new Endereco(null, "Rua teste Old", "64", "Casa amarela Old", "Jd teste Old", "03535-050", cd1, cli1);
 		Endereco end3Cli2 = new Endereco(null, "Rua teste cliente 2", "4", "Casa Azul", "Jd teste cli 2", "02222-000", cd2, cli2);
 		Endereco end4Cli3= new Endereco(null, "Rua teste cliente 3", "6", "Casa Verde", "Jd teste cli 3", "33333-000", cd3, cli3);
+		Endereco end5Cli4= new Endereco(null, "Rua teste cliente admin", "6", "Casa Verde", "Jd teste cli admin", "33333-000", cd3, cli4);
 		cli1.getEndereco().addAll(Arrays.asList(end1Cli1, end2Cli1, end3Cli2, end4Cli3));
 		cli2.getEndereco().addAll(Arrays.asList(end3Cli2));
 		cli3.getEndereco().addAll(Arrays.asList(end4Cli3));
+		cli4.getEndereco().addAll(Arrays.asList(end5Cli4));
 		
-		this.clienteRepository.saveAll(Arrays.asList(cli1, cli2, cli3));
-		this.enderecoRepository.saveAll(Arrays.asList(end1Cli1, end2Cli1, end3Cli2, end4Cli3));
+		this.clienteRepository.saveAll(Arrays.asList(cli1, cli2, cli3, cli4));
+		this.enderecoRepository.saveAll(Arrays.asList(end1Cli1, end2Cli1, end3Cli2, end4Cli3, end5Cli4));
 		
 		Pedido ped1 = new Pedido(null, sdf.parse("30/09/2017 10:32"), cli1, end1Cli1);
 		Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
