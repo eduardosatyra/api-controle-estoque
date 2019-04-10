@@ -121,12 +121,12 @@ public class DBService {
 		
 		Cliente cli1 = new Cliente(null, "Jose Farias", "testeste@gmail.com", "57832532009", bCrypt.encode("123"), TipoCliente.PESSOAFISICA);
 		cli1.getTelefones().addAll(Arrays.asList("11111111111"));
-		Cliente cli2 = new Cliente(null, "Renata Goncalves", "renatagoncalves@hotmail.com", "98443547065", bCrypt.encode("321"), TipoCliente.PESSOAFISICA);
+		Cliente cli2 = new Cliente(null, "Renata Goncalves", "renatagoncalves@hotmail.com", "98443547065", bCrypt.encode("123"), TipoCliente.PESSOAFISICA);
 		cli2.getTelefones().addAll(Arrays.asList("11222222222"));
 		Cliente cli3 = new Cliente(null, "Raimunda Nonota", "raimundanonata@yahoo.com.br", "65708207000160", bCrypt.encode("123"), TipoCliente.PESSOAJURIDICA);
 		cli3.getTelefones().addAll(Arrays.asList("11333333333"));
 		
-		Cliente cli4 = new Cliente(null, "Eduardo Satyra", "edufelipefreitas2@gmail.com", "51965996060", bCrypt.encode("admin"), TipoCliente.PESSOAFISICA);
+		Cliente cli4 = new Cliente(null, "Eduardo Satyra", "edufelipefreitas2@gmail.com", "51965996060", bCrypt.encode("123"), TipoCliente.PESSOAFISICA);
 		cli4.getTelefones().addAll(Arrays.asList("11333333333"));
 		cli4.addPerfil(Perfil.ADMIN);
 		

@@ -62,7 +62,7 @@ public class Cliente implements Serializable {
 	private List<Pedido> pedidos = new ArrayList<>();
 	
 	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "PERFIS")
+	@CollectionTable(name = "PERFIL")
 	private Set<Integer> perfil = new HashSet<>();
 
 	public Cliente() {

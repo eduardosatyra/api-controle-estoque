@@ -2,6 +2,7 @@ package com.effs.estoque.resources.delete;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +14,6 @@ import com.effs.estoque.services.CategoriaService;
  * @author eduardosatyra
  *
  */
-
 @RestController
 @RequestMapping(value = "/api/v1/categorias")
 public class CategoriaDeleteResource {
@@ -21,6 +21,7 @@ public class CategoriaDeleteResource {
 	@Autowired
 	private CategoriaService categoriaService;
 
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) {
 		this.categoriaService.delete(id);
