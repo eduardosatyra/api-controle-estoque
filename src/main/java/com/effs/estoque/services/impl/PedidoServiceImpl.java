@@ -5,6 +5,9 @@ import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,10 +28,13 @@ import com.effs.estoque.repositories.EnderecoRepository;
 import com.effs.estoque.repositories.ItemPedidoRepository;
 import com.effs.estoque.repositories.PagamentoRepository;
 import com.effs.estoque.repositories.PedidoRepository;
+import com.effs.estoque.security.UserSS;
 import com.effs.estoque.services.ClienteService;
 import com.effs.estoque.services.EmailService;
 import com.effs.estoque.services.PedidoService;
 import com.effs.estoque.services.ProdutoService;
+import com.effs.estoque.services.UserService;
+import com.effs.estoque.services.exception.AuthorizationException;
 import com.effs.estoque.services.exception.ObjectNotFoundException;
 
 /**
@@ -65,6 +71,18 @@ public class PedidoServiceImpl implements PedidoService {
 	public Pedido insert(PedidoDto pDto) {
 		Pedido p = this.parseDtoToEntity(pDto);
 		return p;
+	}
+
+	//implementar com dto depois
+	@Override
+	public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+		UserSS user = UserService.authenticated();
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		Cliente cliente = this.clienteService.findComplete(user.getId());
+		return pedidoRepository.findByCliente(cliente, pageRequest);
 	}
 
 	
