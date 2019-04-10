@@ -17,13 +17,17 @@ import org.springframework.stereotype.Service;
 import com.effs.estoque.domain.Cidade;
 import com.effs.estoque.domain.Cliente;
 import com.effs.estoque.domain.Endereco;
+import com.effs.estoque.domain.enums.Perfil;
 import com.effs.estoque.domain.enums.TipoCliente;
 import com.effs.estoque.dto.ClienteDto;
 import com.effs.estoque.dto.ClienteNewDto;
 import com.effs.estoque.dto.EnderecoDto;
 import com.effs.estoque.repositories.ClienteRepository;
 import com.effs.estoque.repositories.EnderecoRepository;
+import com.effs.estoque.security.UserSS;
 import com.effs.estoque.services.ClienteService;
+import com.effs.estoque.services.UserService;
+import com.effs.estoque.services.exception.AuthorizationException;
 import com.effs.estoque.services.exception.DataIntegrityException;
 import com.effs.estoque.services.exception.ObjectNotFoundException;
 
@@ -43,6 +47,12 @@ public class ClienteServiceImpl implements ClienteService {
 
 	@Override
 	public Cliente findComplete(Integer id) {
+		
+		UserSS user = UserService.authenticated();
+		if (user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationException("Acesso negado!");
+		}
+		
 		Optional<Cliente> cli = this.clienteRepository.findById(id);
 		if (!cli.isPresent()) {
 			throw new ObjectNotFoundException(
