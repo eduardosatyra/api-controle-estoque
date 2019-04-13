@@ -44,7 +44,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			"/swagger-ui.html",
 			"/swagger-resources/**",
 			"/v2/api-docs",
-			"/webjars/**"
+			"/webjars/**",
+			"/api/v1/auth/forgot"
 	};
 	
 	private static final String[] PUBLIC_MATCHERS_GET = {
