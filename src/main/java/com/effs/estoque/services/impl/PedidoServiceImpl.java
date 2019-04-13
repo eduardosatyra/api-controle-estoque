@@ -20,6 +20,7 @@ import com.effs.estoque.domain.PagamentoComCartao;
 import com.effs.estoque.domain.Pedido;
 import com.effs.estoque.domain.Produto;
 import com.effs.estoque.domain.enums.EstadoPagamento;
+import com.effs.estoque.domain.enums.Perfil;
 import com.effs.estoque.dto.ItemPedidoDto;
 import com.effs.estoque.dto.PagamentoComBoletoDto;
 import com.effs.estoque.dto.PagamentoComCartaoDto;
@@ -61,6 +62,10 @@ public class PedidoServiceImpl implements PedidoService {
 	
 	@Override
 	public Pedido find(Integer id) {
+		UserSS user = UserService.authenticated();
+		if (user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationException("Acesso negado!");
+		}
 		Optional<Pedido> p = this.pedidoRepository.findById(id);
 		return p.orElseThrow(() -> new ObjectNotFoundException(
 				"Pedido não encontrado pelo id: " + id + ", Objeto: " + Pedido.class.getName()));
