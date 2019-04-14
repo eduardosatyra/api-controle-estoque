@@ -6,5 +6,5 @@ build api-controle-estoque:
     - whoami
     - ls -a
     - java --version
-    - sudo apt-get update && apt-get install npm
+    - apt-get update && apt-get install npm
     - npm install -g surge
