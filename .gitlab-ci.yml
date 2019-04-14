@@ -1,10 +1,9 @@
-image: openjdk
+image: ubuntu
 
 build api-controle-estoque:
   script:
     - pwd
     - whoami
     - ls -a
+    - apt-get install openjdk-8-jdk
     - java --version
-    - apt-get update && apt-get install npm
-    - npm install -g surge
