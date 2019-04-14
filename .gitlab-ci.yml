@@ -1,0 +1,8 @@
+image: java
+
+build api-controle-estoque:
+  script:
+    - pwd
+    - whoami
+    - ls -a
+    - java --version
