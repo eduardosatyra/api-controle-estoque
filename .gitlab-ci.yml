@@ -1,11 +1,8 @@
-image: ubuntu
+image: java
 
 build api-controle-estoque:
   script:
     - pwd
     - whoami
     - ls -a
-    - add-apt-repository ppa:openjdk-r/ppa
-    - apt-get update
-    - apt-get install openjdk-8-jdk
     - java --version
