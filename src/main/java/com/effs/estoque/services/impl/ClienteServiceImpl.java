@@ -1,5 +1,6 @@
 package com.effs.estoque.services.impl;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.effs.estoque.domain.Cidade;
 import com.effs.estoque.domain.Cliente;
@@ -26,6 +28,7 @@ import com.effs.estoque.repositories.ClienteRepository;
 import com.effs.estoque.repositories.EnderecoRepository;
 import com.effs.estoque.security.UserSS;
 import com.effs.estoque.services.ClienteService;
+import com.effs.estoque.services.S3Service;
 import com.effs.estoque.services.UserService;
 import com.effs.estoque.services.exception.AuthorizationException;
 import com.effs.estoque.services.exception.DataIntegrityException;
@@ -44,6 +47,8 @@ public class ClienteServiceImpl implements ClienteService {
 	private EnderecoRepository enderecoRepository;
 	@Autowired
 	private BCryptPasswordEncoder bCrypt;
+	@Autowired
+	private S3Service s3Service;
 
 	@Override
 	public Cliente findComplete(Integer id) {
@@ -147,5 +152,10 @@ public class ClienteServiceImpl implements ClienteService {
 	private void updateData(ClienteDto cDto, Cliente c) {
 		c.setNome(cDto.getNome());
 		c.setEmail(cDto.getEmail());
+	}
+
+	@Override
+	public URI uploadProfilePicture(MultipartFile multipartFile) {
+		return s3Service.uploadFile(multipartFile);
 	}
 }
