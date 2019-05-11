@@ -64,9 +64,6 @@ public class Cliente implements Serializable {
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "PERFIL")
 	private Set<Integer> perfil = new HashSet<>();
-	
-	@Column(name = "imagem")
-	private String imageUrl;
 
 	public Cliente() {
 		this.addPerfil(Perfil.CLIENTE);
@@ -160,14 +157,6 @@ public class Cliente implements Serializable {
 
 	public void addPerfil(Perfil perfil) {
 		this.perfil.add(perfil.getCod());
-	}
-
-	public String getImageUrl() {
-		return imageUrl;
-	}
-
-	public void setImageUrl(String imageUrl) {
-		this.imageUrl = imageUrl;
 	}
 
 	@Override

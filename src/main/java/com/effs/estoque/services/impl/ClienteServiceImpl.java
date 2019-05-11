@@ -1,6 +1,6 @@
 package com.effs.estoque.services.impl;
 
-import java.net.MalformedURLException;
+import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,6 +30,7 @@ import com.effs.estoque.repositories.ClienteRepository;
 import com.effs.estoque.repositories.EnderecoRepository;
 import com.effs.estoque.security.UserSS;
 import com.effs.estoque.services.ClienteService;
+import com.effs.estoque.services.ImageService;
 import com.effs.estoque.services.S3Service;
 import com.effs.estoque.services.UserService;
 import com.effs.estoque.services.exception.AuthorizationException;
@@ -50,6 +52,11 @@ public class ClienteServiceImpl implements ClienteService {
 	private BCryptPasswordEncoder bCrypt;
 	@Autowired
 	private S3Service s3Service;
+	@Autowired
+	private ImageService imageService;
+	
+	@Value("${img.prefix.client.profile}")
+	private String prefix;
 
 	@Override
 	public Cliente findComplete(Integer id) {
@@ -160,12 +167,9 @@ public class ClienteServiceImpl implements ClienteService {
 		UserSS user = UserService.authenticated();
 		if (user == null) {
 			throw new AuthorizationException("Acesso negado!");
-		}
-		URI uri = s3Service.uploadFile(multipartFile);
-		
-		Cliente cli = this.findComplete(user.getId());
-		cli.setImageUrl(uri.toString());
-		this.clienteRepository.save(cli);
-		return uri;
+		}		
+		BufferedImage jpgImage = this.imageService.getJpgImageFromFile(multipartFile);
+		String fileName = prefix + user.getId() + ".jpg";
+		return this.s3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");
 	}
 }
