@@ -57,6 +57,9 @@ public class ClienteServiceImpl implements ClienteService {
 	
 	@Value("${img.prefix.client.profile}")
 	private String prefix;
+	
+	@Value("${img.profile.size}")
+	private int size;
 
 	@Override
 	public Cliente findComplete(Integer id) {
@@ -169,6 +172,9 @@ public class ClienteServiceImpl implements ClienteService {
 			throw new AuthorizationException("Acesso negado!");
 		}		
 		BufferedImage jpgImage = this.imageService.getJpgImageFromFile(multipartFile);
+		jpgImage = this.imageService.cropSquare(jpgImage);
+		jpgImage = this.imageService.resize(jpgImage, size);
+		
 		String fileName = prefix + user.getId() + ".jpg";
 		return this.s3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");
 	}
