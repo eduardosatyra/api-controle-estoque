@@ -1,5 +1,6 @@
 package com.effs.estoque.services.impl;
 
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -155,7 +156,16 @@ public class ClienteServiceImpl implements ClienteService {
 	}
 
 	@Override
-	public URI uploadProfilePicture(MultipartFile multipartFile) {
-		return s3Service.uploadFile(multipartFile);
+	public URI uploadProfilePicture(MultipartFile multipartFile) {		
+		UserSS user = UserService.authenticated();
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado!");
+		}
+		URI uri = s3Service.uploadFile(multipartFile);
+		
+		Cliente cli = this.findComplete(user.getId());
+		cli.setImageUrl(uri.toString());
+		this.clienteRepository.save(cli);
+		return uri;
 	}
 }
